@@ -6,8 +6,9 @@ server.use(express.json());
 server.use(cors());
 
 server.get("/", (req, res) => {
-  console.log(`this is a ${req.method} request`);
-  res.json({ message: "Hello World!" });
+  res.status(200).json({
+    message: "let's set up this webhook!",
+  });
 });
 
 server.post("/hook", (req, res) => {
