@@ -1,5 +1,6 @@
-const checkForNY = (req, res, next) => {
+const checkForNYC = (req, res, next) => {
   const { city, countryCode, country, region } = req.body.visitor;
+  console.log(req.body);
   if (
     city === "New York" &&
     countryCode === "US" &&
@@ -8,7 +9,20 @@ const checkForNY = (req, res, next) => {
   ) {
     next();
   } else {
-    return next({ status: 200, message: "not in NYC" });
+    return next({ status: 200, message: "customer not located in NYC" });
+  }
+};
+
+const checkContactInfoExist = (req, res, next) => {
+  const { emailAddress, phoneNumber } = req.body.visitor;
+  if (!emailAddress || !phoneNumber) {
+    return next({
+      status: 200,
+      message:
+        "will not be able to triangulate without an email address and phone number",
+    });
+  } else {
+    next();
   }
 };
 
@@ -18,9 +32,12 @@ const checkForPizza = (req, res, next) => {
   messages.map((msg) => {
     if (msg.kind === "MessageToOperator") {
       const sentence = msg.body.trim();
-      sentence.split(/\W+/).map((word) => {
+      const words = sentence.split(/\W+/);
+      words.map((word, index) => {
         if (word.toLowerCase() === "pizza") {
-          pizzaMentioned = true;
+          if (!words[index + 1] || words[index + 1].toLowerCase() !== "bike") {
+            pizzaMentioned = true;
+          }
         }
       });
     }
@@ -32,17 +49,8 @@ const checkForPizza = (req, res, next) => {
   }
 };
 
-const checkContactInfoExist = (req, res, next) => {
-  const { emailAddress, phoneNumber } = req.body.visitor;
-  if (!emailAddress || !phoneNumber) {
-    return next({ status: 200, message: "cannot triangulate" });
-  } else {
-    next();
-  }
-};
-
 module.exports = {
   checkForPizza,
-  checkForNY,
+  checkForNYC,
   checkContactInfoExist,
 };

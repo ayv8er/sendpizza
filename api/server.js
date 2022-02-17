@@ -1,7 +1,7 @@
 const {
-  checkForPizza,
-  checkForNY,
+  checkForNYC,
   checkContactInfoExist,
+  checkForPizza,
 } = require("./middleware");
 const { orderPizza } = require("./axios");
 
@@ -14,9 +14,9 @@ server.use(cors());
 
 server.post(
   "/hook",
-  checkForNY,
-  checkForPizza,
+  checkForNYC,
   checkContactInfoExist,
+  checkForPizza,
   orderPizza,
   (req, res) => {
     res.status(200);
