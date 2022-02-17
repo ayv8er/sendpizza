@@ -18,8 +18,7 @@ const checkContactInfoExist = (req, res, next) => {
   if (!emailAddress || !phoneNumber) {
     return next({
       status: 200,
-      message:
-        "will not be able to triangulate without an email address and phone number",
+      message: "cannot triangulate without email address and phone number",
     });
   } else {
     next();

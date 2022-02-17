@@ -12,6 +12,12 @@ const server = express();
 server.use(express.json());
 server.use(cors());
 
+server.get("/", (req, res) => {
+  res.status(200).json({
+    message: "Ben's Bike Shop Pizza Delivery Webhook",
+  });
+});
+
 server.post(
   "/hook",
   checkForNYC,
