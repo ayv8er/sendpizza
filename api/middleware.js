@@ -1,3 +1,13 @@
+const checkForBody = (req, res, next) => {
+  console.log(req);
+  req.body = JSON.parse(req.body.data);
+  if (req.body.visitor) {
+    next();
+  } else {
+    return next({ status: 200, message: "no information sent" });
+  }
+};
+
 const checkForNYC = (req, res, next) => {
   const { city, countryCode, country, region } = req.body.visitor;
   console.log(req.body);
@@ -49,6 +59,7 @@ const checkForPizza = (req, res, next) => {
 };
 
 module.exports = {
+  checkForBody,
   checkForPizza,
   checkForNYC,
   checkContactInfoExist,

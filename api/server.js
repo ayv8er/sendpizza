@@ -1,16 +1,21 @@
-const {
-  checkForNYC,
-  checkContactInfoExist,
-  checkForPizza,
-} = require("./middleware");
-const { orderPizza } = require("./axios");
-
 const express = require("express");
 const cors = require("cors");
 
 const server = express();
+const bodyParser = require("body-parser");
+
+server.use(bodyParser.urlencoded({ extended: true }));
 server.use(express.json());
 server.use(cors());
+
+const {
+  checkForBody,
+  checkForNYC,
+  checkContactInfoExist,
+  checkForPizza,
+} = require("./middleware");
+
+const { orderPizza } = require("./axios");
 
 server.get("/", (req, res) => {
   res.status(200).json({
@@ -20,6 +25,7 @@ server.get("/", (req, res) => {
 
 server.post(
   "/hook",
+  checkForBody,
   checkForNYC,
   checkContactInfoExist,
   checkForPizza,
