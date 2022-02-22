@@ -1,5 +1,4 @@
 const checkForBody = (req, res, next) => {
-  console.log(req);
   req.body = JSON.parse(req.body.data);
   if (req.body.visitor) {
     next();
